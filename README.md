@@ -1,18 +1,18 @@
-#cryptogm in golang
+# cryptogm in golang
 
 An implementation of china crypto standards written in golang. This package includes sm2,sm3 and sm4 algorithms.
 All algorithms have good performance with some optimization.
-#Install 
+# Install 
 
 ```
 go get github.com/xlcetc/cryptogm
 ```
 
-#Benchmark
+# Benchmark
 
 CPU: intel core i7-7700 @3.6GHz.
 
-##sm2
+## sm2
 
 ```
 BenchmarkSign-8               	   	     19392 ns/op 
@@ -23,7 +23,7 @@ BenchmarkSignWithASN1-8       	   	     21251 ns/op
 BenchmarkVerifyWithASN1-8     	   	     30390 ns/op 
 ```
 
-##sm3
+## sm3
 
 ```
 BenchmarkHash8Bytes-8   	 220   ns/op	      36.44  MB/s
@@ -31,7 +31,7 @@ BenchmarkHash1K-8       	 2815  ns/op	      363.71 MB/s
 BenchmarkHash8K-8       	 20422 ns/op	      401.13 MB/s
 ```
 
-##sm4
+## sm4
 
 ```
 BenchmarkSm4Ecb8Bytes-8       	623   ns/op	  12.83  MB/s
