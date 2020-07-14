@@ -101,8 +101,19 @@ func getZById(pub *PublicKey, id []byte) []byte {
 	var ENTLa = []byte{byte(lena >> 8), byte(lena)}
 	var z = make([]byte, 0, 1024)
 
+	//padding if len(x) or len(y)<32 bytes
 	xBuf := pub.X.Bytes()
 	yBuf := pub.Y.Bytes()
+
+	xPadding := make([]byte,32)
+	yPadding := make([]byte,32)
+
+	if n := len(xBuf); n < 32 {
+		xBuf = append(xPadding[:32-n], xBuf...)
+	} 
+	if n := len(yBuf); n < 32 {
+		yBuf = append(yPadding[:32-n], yBuf...)
+	} 
 
 	var SM2PARAM_A, _ = new(big.Int).SetString("FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFC", 16)
 

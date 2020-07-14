@@ -73,6 +73,16 @@ regen:
 	xBuf := x2.Bytes()
 	yBuf := y2.Bytes()
 
+	xPadding := make([]byte,32)
+	yPadding := make([]byte,32)
+
+	if n := len(xBuf); n < 32 {
+		xBuf = append(xPadding[:32-n], xBuf...)
+	} 
+	if n := len(yBuf); n < 32 {
+		yBuf = append(yPadding[:32-n], yBuf...)
+	} 
+
 	//z=x2||y2
 	Z := make([]byte, 64)
 	copy(Z, xBuf)
@@ -114,6 +124,16 @@ func Decrypt(c []byte, key *PrivateKey) ([]byte, error) {
 
 	xBuf := x2.Bytes()
 	yBuf := y2.Bytes()
+
+	xPadding := make([]byte,32)
+	yPadding := make([]byte,32)
+
+	if n := len(xBuf); n < 32 {
+		xBuf = append(xPadding[:32-n], xBuf...)
+	} 
+	if n := len(yBuf); n < 32 {
+		yBuf = append(yPadding[:32-n], yBuf...)
+	} 
 
 	//z=x2||y2
 	Z := make([]byte, 64)
@@ -158,6 +178,16 @@ func pointToBytes(x, y *big.Int) []byte {
 
 	xBuf := x.Bytes()
 	yBuf := y.Bytes()
+	
+	xPadding := make([]byte,32)
+	yPadding := make([]byte,32)
+
+	if n := len(xBuf); n < 32 {
+		xBuf = append(xPadding[:32-n], xBuf...)
+	} 
+	if n := len(yBuf); n < 32 {
+		yBuf = append(yPadding[:32-n], yBuf...)
+	} 
 
 	//s = 04||x||y
 	buf = append(buf, 0x4)
