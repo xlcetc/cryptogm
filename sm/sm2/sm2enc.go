@@ -6,7 +6,7 @@ package sm2
 
 import (
 	"bytes"
-	"cryptogm/sm/sm3"
+	"github.com/xlcetc/cryptogm/sm/sm3"
 	"encoding/binary"
 	"errors"
 	"io"

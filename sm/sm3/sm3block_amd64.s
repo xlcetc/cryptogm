@@ -100,7 +100,7 @@
     VPXOR XTMP2, XTMP0, XTMP0;                 \ //  #--6--(W[-6],W[-5],W[-4],W[-3])^((W[-13],W[-12],W[-11],W[-10] <<< 17)
     RORXL $23, y3, h;                          \ // 
     MOVL y2, d;                                \ // 
-    VPSHUFD $57, XDWORD3, XTMP1;       \ //  #--7--(W[-3],W[-2],W[-1],W[0])
+    VPSHUFD $57, XDWORD3, XTMP1;               \ //  #--7--(W[-3],W[-2],W[-1],W[0])
     XORL y3, h;                                \ // 
     RORXL $15, y3, y1;                         \ // 
     VPSLLD $15, XTMP1, XTMP2;                  \ //  #--8--((W[-3],W[-2],W[-1],W[0]) << 15)
@@ -167,18 +167,18 @@
     ADDL y1, y2;                               \ // #FF0(A, B, C)+D+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7) ^ ROTATELEFT(A,12)
     XORL e, y3;                                \ // #GG0(E,F,G)
     ADDL (_XFER+2*4)(SP)(SRND*1), y2;          \ // #FF0(A, B, C)+D+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7) ^ ROTATELEFT(A,12)+W'[j]
-    VPSHUFD $0,XTMP1,XTMP3;           \ // #--23--(W[0],W[0],W[0],W[0])
+    VPSHUFD $0,XTMP1,XTMP3;                    \ // #--23--(W[0],W[0],W[0],W[0])
     ADDL (_XMM_SAVE+2*4)(SP)(SRND*1),y0;       \ // #H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     MOVL y2, b;                                \ //
     VPSLLQ $15, XTMP3, XTMP3;                  \ // #--24--(W[0],W[0] <<< 15,W[0],W[0])
     ADDL y0, y3;                               \ // #GG0(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     RORXL $13, h, h;                           \ // #ROTATELEFT(F,19);
-    VPSHUFD $85,XTMP3,XTMP3 ;          \ // #--25--
+    VPSHUFD $85,XTMP3,XTMP3 ;                  \ // #--25--
     RORXL $23, y3, f;                          \ //
     XORL y3, f;                                \ //
     VPXOR XTMP3, XTMP2, XTMP2;                 \ // #--26--((W[0] <<< 15) ^ XTMP2,W[0],W[0],W[0])
     RORXL $15, y3, y1;                         \ //
-    VPSHUFD $255,XTMP2,XTMP3;           \ // #--27--(X,X,X,X)
+    VPSHUFD $255,XTMP2,XTMP3;                  \ // #--27--(X,X,X,X)
     XORL y1, f;                                \ // #P0(GG0(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j])
     ;                                          \ //
     ;                                          \ // 4/4
@@ -195,7 +195,7 @@
     ADDL 0(TBL), y0;                           \ // #offset
     ADDL $4, TBL;                              \
     XORL g, y3;                                \ //
-    VPSHUFD $85,XTMP4,XTMP4;           \ // #--31--((X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15))
+    VPSHUFD $85,XTMP4,XTMP4;                   \ // #--31--((X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15))
     RORXL $23, c, c;                           \ // #ROTATELEFT(B,9);
     RORXL $25, y0, y0;                         \ // #ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)
     XORL h, y3;                                \ // #GG0(E,F,G)
@@ -211,7 +211,7 @@
     ADDL y0, y3;                               \ // #GG0(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     MOVL y2, a;                                \ //
     RORXL $23, y3, e;                          \ //
-    VPSHUFD $57, XTMP0, XTMP0;         \ // #--35--
+    VPSHUFD $57, XTMP0, XTMP0;                 \ // #--35--
     RORXL $13, g, g;                           \ // #ROTATELEFT(F,19);
     XORL y3, e;                                \ //
     RORXL $15, y3, y1;                         \ //
@@ -247,19 +247,19 @@
     ADDL h, y0;                                \ // #H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)
     ANDL e, y2;                                \ // 
     ADDL (_XFER+0*4)(SP)(SRND*1), y3;          \ // #FF1(A, B, C)+D+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7) ^ ROTATELEFT(A,12)+W'[j]
-    VPSHUFD $57, XDWORD3,XTMP1;        \ // #--7--(W[-3],W[-2],W[-1],W[0])
+    VPSHUFD $57, XDWORD3,XTMP1;                \ // #--7--(W[-3],W[-2],W[-1],W[0])
     ADDL (_XMM_SAVE+0*4)(SP)(SRND*1), y0;      \ // #H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     XORL g, y2;                                \ // 
     MOVL y3, d;                                \ // 
     RORXL $13, f, f;                           \ // #ROTATELEFT(F,19);
     ADDL y2, y0;                               \ // #GG1(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     VPSLLD $15, XTMP1, XTMP2;                  \ // #--8--((W[-3],W[-2],W[-1],W[0]) << 15)
-    MOVL a, y1;                               \ //
+    MOVL a, y1;                                \ //
     RORXL $23, y0, h;                          \ // 
     RORXL $15, y0, y3;                         \ // 
     XORL y0, h;                                \ // 
     VPSRLD $17, XTMP1, XTMP1;                  \ // #--9--((W[-3],W[-2],W[-1],W[0]) >> 17)
-    MOVL b, y2;                               \ //
+    MOVL b, y2;                                \ //
     XORL y3, h;                                \ // #P0(GG1(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j])
     ;                                          \ // 
     ;                                          \ // 2/4
@@ -297,12 +297,12 @@
     MOVL y3, c;                                \ //
     ADDL y2, y0;                               \ //#GG1(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     VPSRLD $9, XTMP1, XTMP5;                   \ //#--18--P1(x)--> X >> 9
-    MOVL d, y1;                               \ //
+    MOVL d, y1;                                \ //
     RORXL $23, y0, g;                          \ //
     RORXL $15, y0, y3;                         \ //
     XORL y0, g;                                \ //
     VPXOR XTMP5, XTMP4, XTMP4;                 \ //#--19--P1(x)--> X <<< 23
-    MOVL a, y2;                               \ //
+    MOVL a, y2;                                \ //
     XORL y3, g;                                \ //
     ;                                          \ //
     ;                                          \ //3/4
@@ -322,7 +322,7 @@
     MOVL h, y2;                                \ //
     ADDL b, y1;                                \ //#FF1(A, B, C)+D
     RORXL $25, y0, y0;                         \ //#ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)
-    VPSHUFD $0,XTMP1,XTMP3;           \ //#--23--(W[0],W[0],W[0],W[0])
+    VPSHUFD $0,XTMP1,XTMP3;                    \ //#--23--(W[0],W[0],W[0],W[0])
     XORL e, y2;                                \ //
     XORL y0, y3;                               \ //#ROTATELEFT(ROTATELEFT(A,12) + E + k, 7) ^ ROTATELEFT(A,12)
     ADDL f, y0;                                \ //#H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)
@@ -330,19 +330,19 @@
     ADDL y1, y3;                               \ //#FF1(A, B, C)+D+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7) ^ ROTATELEFT(A,12)
     ANDL g, y2;                                \ //
     ADDL (_XFER+2*4)(SP)(SRND*1), y3;          \ //#FF1(A, B, C)+D+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7) ^ ROTATELEFT(A,12)+W'[j]
-    VPSHUFD $85,XTMP3,XTMP3;           \ //#--25--
+    VPSHUFD $85,XTMP3,XTMP3;                   \ //#--25--
     ADDL (_XMM_SAVE+2*4)(SP)(SRND*1),y0;       \ //#H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     XORL e, y2;                                \ //
     MOVL y3, b;                                \ //
     VPXOR XTMP3, XTMP2, XTMP2;                 \ //#--26--((W[0] <<< 15) ^ XTMP2,W[0],W[0],W[0])
     ADDL y2, y0;                               \ //#GG1(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     RORXL $13, h, h;                           \ //#ROTATELEFT(F,19)
-    MOVL c, y1;                               \ //
+    MOVL c, y1;                                \ //
     RORXL $23, y0, f;                          \ //
     RORXL $15, y0, y3;                         \ //
     XORL y0, f;                                \ //
-    VPSHUFD $255,XTMP2,XTMP3;           \ //#--27--(X,X,X,X)
-    MOVL d, y2;                               \ //
+    VPSHUFD $255,XTMP2,XTMP3;                  \ //#--27--(X,X,X,X)
+    MOVL d, y2;                                \ //
     XORL y3, f;                                \ //
     ;                                          \ //
     ;                                          \ //4/4
@@ -357,7 +357,7 @@
     RORXL $23, c, c;                           \ //#ROTATELEFT(B,9);
     ADDL f, y0;                                \ //
     ORL y2, y1;                                \ //#FF1(x,y,z)
-    VPSHUFD $85, XTMP4, XTMP4;         \ //#--31--((X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15))
+    VPSHUFD $85, XTMP4, XTMP4;                 \ //#--31--((X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15),(X <<< 23) ^ (X <<< 15))
     ADDL 0(TBL), y0;                           \ //// #offset
     ADDL $4, TBL;                              \
     MOVL g, y2;                                \ //
@@ -376,7 +376,7 @@
     ADDL (_XMM_SAVE+3*4)(SP)(SRND*1), y0;      \ //#H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     MOVL y3, a;                                \ //
     ADDL y2, y0;                               \ //#GG1(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
-    VPSHUFD $57, XTMP0, XTMP0;         \ //#--35--
+    VPSHUFD $57, XTMP0, XTMP0;                 \ //#--35--
     RORXL $13, g, g;                           \ //#ROTATELEFT(F,19);
     RORXL $23, y0, e;                          \ //
     RORXL $15, y0, y3;                         \ //
@@ -413,12 +413,12 @@
     MOVL y3, d;                                \ //
     ADDL y2, y0;                               \ //#GG1(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     RORXL $13, f, f;                           \ //#ROTATELEFT(F,19);
-    MOVL a, y1;                               \ //
+    MOVL a, y1;                                \ //
     RORXL $23, y0, h;                          \ //
     RORXL $15, y0, y3;                         \ //
     XORL y0, h;                                \ //
-    MOVL b, y2;                               \ //
-    RORXL $20, d, y0;                         \ //#ROTATELEFT(A,12)
+    MOVL b, y2;                                \ //
+    RORXL $20, d, y0;                          \ //#ROTATELEFT(A,12)
     XORL y3, h;                                \ //
     ;                                          \ //
     ;                                          \ //2/4
@@ -445,12 +445,12 @@
     MOVL y3, c;                                \ //
     ADDL y2, y0;                               \ //#GG1(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     RORXL $13, e, e;                           \ //#ROTATELEFT(F,19);
-    MOVL d, y1;                               \ //
+    MOVL d, y1;                                \ //
     RORXL $23, y0, g;                          \ //
     RORXL $15, y0, y3;                         \ //
     XORL y0, g;                                \ //
-    MOVL a, y2;                               \ //
-    RORXL $20, c, y0;                         \ //#ROTATELEFT(A,12)
+    MOVL a, y2;                                \ //
+    RORXL $20, c, y0;                          \ //#ROTATELEFT(A,12)
     XORL y3, g;                                \ //
     ;                                          \ //
     ;                                          \ //3/4
@@ -477,12 +477,12 @@
     MOVL y3, b;                                \ //
     ADDL y2, y0;                               \ //#GG1(E,F,G)+H+ROTATELEFT(ROTATELEFT(A,12) + E + k, 7)+W[j]
     RORXL $13, h, h;                           \ //#ROTATELEFT(F,19);
-    MOVL c, y1;                               \ //
+    MOVL c, y1;                                \ //
     RORXL $23, y0, f;                          \ //
     RORXL $15, y0, y3;                         \ //
     XORL y0, f;                                \ //
-    MOVL d, y2;                               \ //
-    RORXL $20, b, y0;                         \ //#ROTATELEFT(A,12)
+    MOVL d, y2;                                \ //
+    RORXL $20, b, y0;                          \ //#ROTATELEFT(A,12)
     XORL y3, f;                                \ //
     ;                                          \ //
     ;                                          \ //4/4
