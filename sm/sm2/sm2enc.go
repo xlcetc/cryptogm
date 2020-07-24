@@ -6,9 +6,9 @@ package sm2
 
 import (
 	"bytes"
+	"cryptogm/sm/sm3"
 	"encoding/binary"
 	"errors"
-	"github.com/xlcetc/cryptogm/sm/sm3"
 	"io"
 	"math"
 	"math/big"
@@ -75,13 +75,13 @@ regen:
 
 	xPadding := make([]byte,32)
 	yPadding := make([]byte,32)
-
 	if n := len(xBuf); n < 32 {
 		xBuf = append(xPadding[:32-n], xBuf...)
-	} 
+	}
+
 	if n := len(yBuf); n < 32 {
 		yBuf = append(yPadding[:32-n], yBuf...)
-	} 
+	}
 
 	//z=x2||y2
 	Z := make([]byte, 64)
@@ -127,13 +127,13 @@ func Decrypt(c []byte, key *PrivateKey) ([]byte, error) {
 
 	xPadding := make([]byte,32)
 	yPadding := make([]byte,32)
-
 	if n := len(xBuf); n < 32 {
 		xBuf = append(xPadding[:32-n], xBuf...)
-	} 
+	}
+
 	if n := len(yBuf); n < 32 {
 		yBuf = append(yPadding[:32-n], yBuf...)
-	} 
+	}
 
 	//z=x2||y2
 	Z := make([]byte, 64)
@@ -178,16 +178,16 @@ func pointToBytes(x, y *big.Int) []byte {
 
 	xBuf := x.Bytes()
 	yBuf := y.Bytes()
-	
+
 	xPadding := make([]byte,32)
 	yPadding := make([]byte,32)
-
 	if n := len(xBuf); n < 32 {
 		xBuf = append(xPadding[:32-n], xBuf...)
-	} 
+	}
+
 	if n := len(yBuf); n < 32 {
 		yBuf = append(yPadding[:32-n], yBuf...)
-	} 
+	}
 
 	//s = 04||x||y
 	buf = append(buf, 0x4)

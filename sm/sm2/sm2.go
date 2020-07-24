@@ -7,9 +7,9 @@ package sm2
 
 import (
 	"crypto"
+	"cryptogm/sm/sm3"
+	"cryptogm/sm2curve"
 	"errors"
-	"github.com/xlcetc/cryptogm/sm/sm3"
-	"github.com/xlcetc/cryptogm/sm2curve"
 	"io"
 	"math/big"
 )
@@ -101,7 +101,7 @@ func getZById(pub *PublicKey, id []byte) []byte {
 	var ENTLa = []byte{byte(lena >> 8), byte(lena)}
 	var z = make([]byte, 0, 1024)
 
-	//padding if len(x) or len(y)<32 bytes
+	//判断公钥x,y坐标长度是否小于32字节，若小于则在前面补0
 	xBuf := pub.X.Bytes()
 	yBuf := pub.Y.Bytes()
 
@@ -110,10 +110,11 @@ func getZById(pub *PublicKey, id []byte) []byte {
 
 	if n := len(xBuf); n < 32 {
 		xBuf = append(xPadding[:32-n], xBuf...)
-	} 
+	}
+
 	if n := len(yBuf); n < 32 {
 		yBuf = append(yPadding[:32-n], yBuf...)
-	} 
+	}
 
 	var SM2PARAM_A, _ = new(big.Int).SetString("FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFC", 16)
 

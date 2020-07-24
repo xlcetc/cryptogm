@@ -2,7 +2,7 @@
 // Use of this source code is governed by a BSD-style
 // license that can be found in the LICENSE file.
 
-// Package sm2curve implements china sm2 standard elliptic curves over prime
+// Package elliptic implements several standard elliptic curves over prime
 // fields.
 package sm2curve
 
