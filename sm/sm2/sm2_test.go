@@ -6,8 +6,8 @@ package sm2
 import (
 	"bytes"
 	"crypto/rand"
-	"cryptogm/sm/sm3"
-	"cryptogm/sm2curve"
+	"github.com/xlcetc/cryptogm/sm/sm3"
+	"github.com/xlcetc/cryptogm/sm2curve"
 	"encoding/hex"
 	"math/big"
 	"testing"
