@@ -8,7 +8,7 @@ package sm2
 import (
 	"crypto"
 	"github.com/xlcetc/cryptogm/sm/sm3"
-	"github.com/xlcetc/cryptogm/sm2curve"
+	"github.com/xlcetc/cryptogm/elliptic/sm2curve"
 	"errors"
 	"io"
 	"math/big"

@@ -1,6 +1,6 @@
 # cryptogm in golang
 
-An implementation of china crypto standards written in golang. This package includes sm2,sm3 and sm4 algorithms.
+An implementation of china crypto standards written in golang. This package includes sm2,sm3,sm4 and sm9 algorithms.
 Some algorithms have been optimized using AVX2 instructions.
 # Install 
 
