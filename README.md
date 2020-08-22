@@ -41,3 +41,10 @@ BenchmarkSm4Cbc8Bytes-8         664   ns/op	  12.05  MB/s
 BenchmarkSm4Cbc1K-8             12299 ns/op	  83.26  MB/s
 BenchmarkSm4Cbc8K-8             95395 ns/op	  85.87  MB/s
 ```
+
+## sm9
+
+```
+BenchmarkSign-8                      543           2187579 ns/op
+BenchmarkVerify-8                    338           3599817 ns/op
+```

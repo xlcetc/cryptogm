@@ -7,7 +7,7 @@ import (
 	"bytes"
 	"crypto/rand"
 	"github.com/xlcetc/cryptogm/sm/sm3"
-	"github.com/xlcetc/cryptogm/sm2curve"
+	"github.com/xlcetc/cryptogm/elliptic/sm2curve"
 	"encoding/hex"
 	"math/big"
 	"testing"

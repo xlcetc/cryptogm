@@ -1,10 +1,14 @@
+// Copyright 2020 cetc-30. All rights reserved.
+// Use of this source code is governed by a BSD-style
+// license that can be found in the LICENSE file.
+
 package sm9
 
 import (
 	"bytes"
 	"crypto/rand"
 	"github.com/xlcetc/cryptogm/elliptic/sm9curve"
-	"cryptogm/sm/sm3"
+	"github.com/xlcetc/cryptogm/sm/sm3"
 	"encoding/binary"
 	"github.com/pkg/errors"
 	"io"
