@@ -5,7 +5,6 @@
 package sm9
 
 import (
-	"bytes"
 	"crypto/rand"
 	"github.com/xlcetc/cryptogm/elliptic/sm9curve"
 	"github.com/xlcetc/cryptogm/sm/sm3"
@@ -77,13 +76,15 @@ func hash(z []byte, n *big.Int, h hashMode) *big.Int {
 
 //generate rand numbers in [1,n-1].
 func randFieldElement(rand io.Reader, n *big.Int) (k *big.Int, err error) {
+	one := big.NewInt(1)
 	b := make([]byte, 256/8+8)
 	_, err = io.ReadFull(rand, b)
 	if err != nil {
 		return
 	}
 	k = new(big.Int).SetBytes(b)
-	k.Mod(k, n)
+	nMinus1 := new(big.Int).Sub(n,one)
+	k.Mod(k, nMinus1)
 	return
 }
 
@@ -110,7 +111,7 @@ func UserKeyGen(mk *MasterKey, id []byte, hid byte) (uk *UserKey, err error) {
 	t1.Add(t1, mk.Msk)
 
 	//if t1 = 0, we need to regenerate the master key.
-	if t1.BitLen() == 0 || bytes.Equal(t1.Bytes(), n.Bytes()) {
+	if t1.BitLen() == 0 || t1.Cmp(n) == 0 {
 		return nil, errors.New("need to regen mk!")
 	}
 
@@ -196,7 +197,7 @@ func Verify(sig *Sm9Sig, msg []byte, id []byte, hid byte, mpk *MasterPubKey) boo
 
 	h2 := hash(msg, n, H2)
 
-	if !bytes.Equal(sig.H.Bytes(), h2.Bytes()) {
+	if h2.Cmp(sig.H) != 0 {
 		return false
 	}
 
