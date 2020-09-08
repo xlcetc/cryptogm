@@ -62,10 +62,7 @@ func randFieldElement(c sm2curve.Curve, rand io.Reader) (k *big.Int, err error) 
 func GenerateKey(rand io.Reader) (*PrivateKey, error) {
 	c := sm2curve.P256()
 
-	k, err := randFieldElement(c, rand)
-	if err != nil {
-		return nil, err
-	}
+	k := _generateRandK(rand,c)
 	priv := new(PrivateKey)
 	priv.PublicKey.Curve = c
 	priv.D = k
@@ -83,15 +80,15 @@ var errZeroParam = errors.New("zero parameter")
 
 func _generateRandK(rand io.Reader, c sm2curve.Curve) (k *big.Int) {
 	params := c.Params()
+	two := big.NewInt(2)
 	b := make([]byte, params.BitSize/8+8)
 	_, err := io.ReadFull(rand, b)
 	if err != nil {
 		return
 	}
 	k = new(big.Int).SetBytes(b)
-	n := new(big.Int).Sub(params.N, one)
+	n := new(big.Int).Sub(params.N, two)
 	k.Mod(k, n)
-	k.Add(k, one)
 	return
 }
 
