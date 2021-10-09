@@ -6,9 +6,9 @@ package sm2
 
 import (
 	"bytes"
-	"github.com/xlcetc/cryptogm/sm/sm3"
 	"encoding/binary"
 	"errors"
+	"github.com/xlcetc/cryptogm/sm/sm3"
 	"io"
 	"math"
 	"math/big"
@@ -63,18 +63,18 @@ func doEncrypt(rand io.Reader, key *PublicKey, msg []byte) (x, y *big.Int, c2, c
 regen:
 	x1, y1 := key.Curve.ScalarBaseMult(k.Bytes())
 
-	var x2,y2 *big.Int
+	var x2, y2 *big.Int
 	if opt, ok := key.Curve.(optMethod); ok && (key.PreComputed != nil) {
-		x2, y2 = opt.PreScalarMult(key.PreComputed,k.Bytes())
-	}else {
+		x2, y2 = opt.PreScalarMult(key.PreComputed, k.Bytes())
+	} else {
 		x2, y2 = key.Curve.ScalarMult(key.X, key.Y, k.Bytes())
 	}
 
 	xBuf := x2.Bytes()
 	yBuf := y2.Bytes()
 
-	xPadding := make([]byte,32)
-	yPadding := make([]byte,32)
+	xPadding := make([]byte, 32)
+	yPadding := make([]byte, 32)
 	if n := len(xBuf); n < 32 {
 		xBuf = append(xPadding[:32-n], xBuf...)
 	}
@@ -125,8 +125,8 @@ func Decrypt(c []byte, key *PrivateKey) ([]byte, error) {
 	xBuf := x2.Bytes()
 	yBuf := y2.Bytes()
 
-	xPadding := make([]byte,32)
-	yPadding := make([]byte,32)
+	xPadding := make([]byte, 32)
+	yPadding := make([]byte, 32)
 	if n := len(xBuf); n < 32 {
 		xBuf = append(xPadding[:32-n], xBuf...)
 	}
@@ -179,8 +179,8 @@ func pointToBytes(x, y *big.Int) []byte {
 	xBuf := x.Bytes()
 	yBuf := y.Bytes()
 
-	xPadding := make([]byte,32)
-	yPadding := make([]byte,32)
+	xPadding := make([]byte, 32)
+	yPadding := make([]byte, 32)
 	if n := len(xBuf); n < 32 {
 		xBuf = append(xPadding[:32-n], xBuf...)
 	}

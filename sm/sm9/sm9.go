@@ -6,10 +6,10 @@ package sm9
 
 import (
 	"crypto/rand"
-	"github.com/xlcetc/cryptogm/elliptic/sm9curve"
-	"github.com/xlcetc/cryptogm/sm/sm3"
 	"encoding/binary"
 	"github.com/pkg/errors"
+	"github.com/xlcetc/cryptogm/elliptic/sm9curve"
+	"github.com/xlcetc/cryptogm/sm/sm3"
 	"io"
 	"math"
 	"math/big"
@@ -18,7 +18,9 @@ import (
 type hashMode int
 
 const (
-	H1 hashMode = iota
+	// hashmode used in h1: 0x01
+	H1 hashMode = iota + 1
+	// hashmode used in h2: 0x02
 	H2
 )
 
@@ -83,7 +85,7 @@ func randFieldElement(rand io.Reader, n *big.Int) (k *big.Int, err error) {
 		return
 	}
 	k = new(big.Int).SetBytes(b)
-	nMinus1 := new(big.Int).Sub(n,one)
+	nMinus1 := new(big.Int).Sub(n, one)
 	k.Mod(k, nMinus1)
 	return
 }

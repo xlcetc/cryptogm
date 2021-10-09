@@ -176,19 +176,19 @@ func (e *gfP12) Square(a *gfP12) *gfP12 {
 	return e
 }
 
-func (e *gfP12) Square1(a *gfP12) *gfP12  {
-	tmp1 := new(gfP6).Mul(&a.x,&a.y)
-	tmp2 := new(gfP6).Add(&a.x,&a.y)
+func (e *gfP12) Square1(a *gfP12) *gfP12 {
+	tmp1 := new(gfP6).Mul(&a.x, &a.y)
+	tmp2 := new(gfP6).Add(&a.x, &a.y)
 
 	tmp3 := new(gfP6).MulTau(&a.x)
-	ty := new(gfP6).Add(tmp3,&a.y)
-	ty.Mul(ty,tmp2)
-	ty.Sub(ty,tmp1)
+	ty := new(gfP6).Add(tmp3, &a.y)
+	ty.Mul(ty, tmp2)
+	ty.Sub(ty, tmp1)
 
 	tmp2.MulTau(tmp1)
-	ty.Sub(ty,tmp2)
+	ty.Sub(ty, tmp2)
 
-	tx := new(gfP6).Add(tmp1,tmp1)
+	tx := new(gfP6).Add(tmp1, tmp1)
 
 	e.x.Set(tx)
 	e.y.Set(ty)
@@ -212,7 +212,7 @@ func (e *gfP12) Invert(a *gfP12) *gfP12 {
 }
 
 func montEncodeGfp12(a gfP12) (b gfP12) {
-	var b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12 =gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{},gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}
+	var b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12 = gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}
 	montEncode(&b1, &a.x.x.x)
 	montEncode(&b2, &a.x.x.y)
 	montEncode(&b3, &a.x.y.x)
@@ -225,13 +225,13 @@ func montEncodeGfp12(a gfP12) (b gfP12) {
 	montEncode(&b10, &a.y.y.y)
 	montEncode(&b11, &a.y.z.x)
 	montEncode(&b12, &a.y.z.y)
-	b = gfP12{gfP6{gfP2{b1, b2},gfP2{b3, b4},gfP2{b5, b6}},
-		gfP6{gfP2{b7, b8}, gfP2{b9, b10}, gfP2{b11, b12}} }
+	b = gfP12{gfP6{gfP2{b1, b2}, gfP2{b3, b4}, gfP2{b5, b6}},
+		gfP6{gfP2{b7, b8}, gfP2{b9, b10}, gfP2{b11, b12}}}
 	return b
 }
 
-func montDecodeGfp12(a gfP12) (b gfP12){
-	var b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12 =gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{},gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}
+func montDecodeGfp12(a gfP12) (b gfP12) {
+	var b1, b2, b3, b4, b5, b6, b7, b8, b9, b10, b11, b12 = gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}
 	montDecode(&b1, &a.x.x.x)
 	montDecode(&b2, &a.x.x.y)
 	montDecode(&b3, &a.x.y.x)
@@ -244,7 +244,7 @@ func montDecodeGfp12(a gfP12) (b gfP12){
 	montDecode(&b10, &a.y.y.y)
 	montDecode(&b11, &a.y.z.x)
 	montDecode(&b12, &a.y.z.y)
-	b = gfP12{gfP6{gfP2{b1, b2},gfP2{b3, b4},gfP2{b5, b6}},
-		gfP6{gfP2{b7, b8}, gfP2{b9, b10}, gfP2{b11, b12}} }
+	b = gfP12{gfP6{gfP2{b1, b2}, gfP2{b3, b4}, gfP2{b5, b6}},
+		gfP6{gfP2{b7, b8}, gfP2{b9, b10}, gfP2{b11, b12}}}
 	return b
 }

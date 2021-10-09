@@ -7,23 +7,23 @@ package sm2
 
 import (
 	"crypto"
-	"github.com/xlcetc/cryptogm/sm/sm3"
-	"github.com/xlcetc/cryptogm/elliptic/sm2curve"
 	"errors"
+	"github.com/xlcetc/cryptogm/elliptic/sm2curve"
+	"github.com/xlcetc/cryptogm/sm/sm3"
 	"io"
 	"math/big"
 )
 
 type PublicKey struct {
 	sm2curve.Curve
-	X, Y *big.Int
-	PreComputed *[37][64*8]uint64        //precomputation
+	X, Y        *big.Int
+	PreComputed *[37][64 * 8]uint64 //precomputation
 }
 
 type PrivateKey struct {
 	PublicKey
-	D *big.Int
-	DInv *big.Int         //(1+d)^-1
+	D    *big.Int
+	DInv *big.Int //(1+d)^-1
 }
 
 var generateRandK = _generateRandK
@@ -31,11 +31,11 @@ var generateRandK = _generateRandK
 //optMethod includes some optimized methods.
 type optMethod interface {
 	// CombinedMult implements fast multiplication S1*g + S2*p (g - generator, p - arbitrary point)
-	CombinedMult(Precomputed *[37][64*8]uint64, baseScalar, scalar []byte) (x, y *big.Int)
+	CombinedMult(Precomputed *[37][64 * 8]uint64, baseScalar, scalar []byte) (x, y *big.Int)
 	// InitPubKeyTable implements precomputed table of public key
-	InitPubKeyTable(x,y *big.Int) (Precomputed *[37][64*8]uint64)
+	InitPubKeyTable(x, y *big.Int) (Precomputed *[37][64 * 8]uint64)
 	// PreScalarMult implements fast multiplication of public key
-	PreScalarMult(Precomputed *[37][64*8]uint64, scalar []byte) (x,y *big.Int)
+	PreScalarMult(Precomputed *[37][64 * 8]uint64, scalar []byte) (x, y *big.Int)
 }
 
 // The SM2's private key contains the public key
@@ -62,15 +62,15 @@ func randFieldElement(c sm2curve.Curve, rand io.Reader) (k *big.Int, err error) 
 func GenerateKey(rand io.Reader) (*PrivateKey, error) {
 	c := sm2curve.P256()
 
-	k := _generateRandK(rand,c)
+	k := _generateRandK(rand, c)
 	priv := new(PrivateKey)
 	priv.PublicKey.Curve = c
 	priv.D = k
 	//(1+d)^-1
-	priv.DInv = new(big.Int).Add(k,one)
-	priv.DInv.ModInverse(priv.DInv,c.Params().N)
+	priv.DInv = new(big.Int).Add(k, one)
+	priv.DInv.ModInverse(priv.DInv, c.Params().N)
 	priv.PublicKey.X, priv.PublicKey.Y = c.ScalarBaseMult(k.Bytes())
-	if opt,ok := c.(optMethod);ok {
+	if opt, ok := c.(optMethod); ok {
 		priv.PreComputed = opt.InitPubKeyTable(priv.PublicKey.X, priv.PublicKey.Y)
 	}
 	return priv, nil
@@ -102,8 +102,8 @@ func getZById(pub *PublicKey, id []byte) []byte {
 	xBuf := pub.X.Bytes()
 	yBuf := pub.Y.Bytes()
 
-	xPadding := make([]byte,32)
-	yPadding := make([]byte,32)
+	xPadding := make([]byte, 32)
+	yPadding := make([]byte, 32)
 
 	if n := len(xBuf); n < 32 {
 		xBuf = append(xPadding[:32-n], xBuf...)
@@ -164,7 +164,7 @@ func Sign(rand io.Reader, priv *PrivateKey, msg []byte) (r, s *big.Int, err erro
 	if priv.DInv == nil {
 		s2 = s2.Add(one, priv.D)
 		s2.ModInverse(s2, n)
-	}else {
+	} else {
 		s2 = priv.DInv
 	}
 
@@ -174,7 +174,7 @@ func Sign(rand io.Reader, priv *PrivateKey, msg []byte) (r, s *big.Int, err erro
 	return
 }
 
-func SignWithDigest(rand io.Reader,priv *PrivateKey, digest []byte) (r, s *big.Int, err error) {
+func SignWithDigest(rand io.Reader, priv *PrivateKey, digest []byte) (r, s *big.Int, err error) {
 	var one = new(big.Int).SetInt64(1)
 	//if len(hash) < 32 {
 	//	err = errors.New("The length of hash has short than what SM2 need.")
@@ -201,7 +201,7 @@ func SignWithDigest(rand io.Reader,priv *PrivateKey, digest []byte) (r, s *big.I
 	if priv.DInv == nil {
 		s2 = s2.Add(one, priv.D)
 		s2.ModInverse(s2, n)
-	}else {
+	} else {
 		s2 = priv.DInv
 	}
 
@@ -251,7 +251,7 @@ func Verify(pub *PublicKey, msg []byte, r, s *big.Int) bool {
 	return x.Cmp(r) == 0
 }
 
-func VerifyWithDigest(pub *PublicKey, digest []byte, r, s *big.Int) bool  {
+func VerifyWithDigest(pub *PublicKey, digest []byte, r, s *big.Int) bool {
 	c := pub.Curve
 	N := c.Params().N
 

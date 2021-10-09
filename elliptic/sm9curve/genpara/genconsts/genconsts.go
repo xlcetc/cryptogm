@@ -41,7 +41,7 @@ func printWords(in *big.Int) {
 
 var (
 	u       = bigFromBase10("6518589491078791937")
-	sm9u    = bigFromBase10("6917529027646912906")  //600000000058f98a
+	sm9u    = bigFromBase10("6917529027646912906") //600000000058f98a
 	bitSize = uint(64 * 4)
 )
 
@@ -208,7 +208,7 @@ func gensm9para() {
 
 	// Create algebraic constants.
 	xi := newGFp2(p)
-	b,_ := new(big.Int).SetString("5b2000000151d378eb01d5a7fac763a290f949a58d3d776df2b7cd93f1a8a2be",16)
+	b, _ := new(big.Int).SetString("5b2000000151d378eb01d5a7fac763a290f949a58d3d776df2b7cd93f1a8a2be", 16)
 	xi.x.Set(b)
 	fmt.Println("//ξ=bi, where b = (-1/2) mod p (in montEncode form).")
 	fmt.Print("var bi = ")

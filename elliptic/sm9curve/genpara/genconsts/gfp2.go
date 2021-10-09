@@ -63,7 +63,7 @@ func (c *gfP2) Sm9Mul(a, b *gfP2) *gfP2 {
 	t1, t2 := new(big.Int), new(big.Int)
 	t1.Mul(a.y, b.y)
 	t2.Mul(a.x, b.x)
-	t1.Sub(t1, t2).Sub(t1,t2).Mod(t1, c.p)
+	t1.Sub(t1, t2).Sub(t1, t2).Mod(t1, c.p)
 
 	t3 := new(big.Int)
 	t2.Mul(a.x, b.y)
@@ -97,11 +97,11 @@ func (c *gfP2) Set(a *gfP2) *gfP2 {
 	return c
 }
 
-var zeroWordSlice = []big.Word{0,0,0,0,0,0,0,0}
+var zeroWordSlice = []big.Word{0, 0, 0, 0, 0, 0, 0, 0}
 
 func padding(w []big.Word) []big.Word {
 	if len(w) <= 8 {
-		w = append(zeroWordSlice[8-len(w):],w...)
+		w = append(zeroWordSlice[8-len(w):], w...)
 	}
 
 	return w

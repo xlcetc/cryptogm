@@ -261,7 +261,7 @@ func maybeReduceModP(in *big.Int) *big.Int {
 //	sum.CopyConditional(&r2, r1IsInfinity)
 //	return sum.p256PointToAffine()
 //}
-func (curve p256Curve) CombinedMult(Precomputed *[37][64*8]uint64, baseScalar, scalar []byte) (x, y *big.Int) {
+func (curve p256Curve) CombinedMult(Precomputed *[37][64 * 8]uint64, baseScalar, scalar []byte) (x, y *big.Int) {
 	scalarReversed := make([]uint64, 4)
 	var r1 p256Point
 	r2 := new(p256Point)
@@ -290,7 +290,7 @@ func (curve p256Curve) CombinedMult(Precomputed *[37][64*8]uint64, baseScalar, s
 	////sm2p256PointAddAsm(r1.xyz[:], r1.xyz[:], r2.xyz[:])
 
 	//r2.p256ScalarMult(scalarReversed)
-	r2.p256PreMult(Precomputed,scalarReversed)
+	r2.p256PreMult(Precomputed, scalarReversed)
 
 	var sum, double p256Point
 	pointsEqual := sm2p256PointAddAsm(sum.xyz[:], r1.xyz[:], r2.xyz[:])
@@ -808,7 +808,7 @@ func Uint64ToAffine(in []uint64) (x, y *big.Int) {
 }
 
 //precompute public key table
-func (curve p256Curve) InitPubKeyTable(x,y *big.Int) (Precomputed *[37][64*8]uint64) {
+func (curve p256Curve) InitPubKeyTable(x, y *big.Int) (Precomputed *[37][64 * 8]uint64) {
 	Precomputed = new([37][64 * 8]uint64)
 
 	var r p256Point
@@ -821,9 +821,9 @@ func (curve p256Curve) InitPubKeyTable(x,y *big.Int) (Precomputed *[37][64*8]uin
 	r.xyz[10] = 0x0000000000000000
 	r.xyz[11] = 0x0000000100000000
 	basePoint := []uint64{
-		r.xyz[0], r.xyz[1],r.xyz[2],r.xyz[3],
-		r.xyz[4],r.xyz[5],r.xyz[6],r.xyz[7],
-		r.xyz[8],r.xyz[9],r.xyz[10],r.xyz[11],
+		r.xyz[0], r.xyz[1], r.xyz[2], r.xyz[3],
+		r.xyz[4], r.xyz[5], r.xyz[6], r.xyz[7],
+		r.xyz[8], r.xyz[9], r.xyz[10], r.xyz[11],
 	}
 	t1 := make([]uint64, 12)
 	t2 := make([]uint64, 12)
@@ -863,7 +863,7 @@ func (curve p256Curve) InitPubKeyTable(x,y *big.Int) (Precomputed *[37][64*8]uin
 }
 
 //fast sm2p256Mult with public key table
-func (p *p256Point) p256PreMult(Precomputed *[37][64*8]uint64, scalar []uint64) {
+func (p *p256Point) p256PreMult(Precomputed *[37][64 * 8]uint64, scalar []uint64) {
 	wvalue := (scalar[0] << 1) & 0xff
 	sel, sign := boothW7(uint(wvalue))
 	sm2p256SelectBase(p.xyz[0:8], Precomputed[0][0:], sel)
@@ -906,13 +906,13 @@ func (p *p256Point) p256PreMult(Precomputed *[37][64*8]uint64, scalar []uint64) 
 }
 
 //fast scalarmult with public key table
-func (curve p256Curve) PreScalarMult(Precomputed *[37][64*8]uint64, scalar []byte) (x,y *big.Int) {
+func (curve p256Curve) PreScalarMult(Precomputed *[37][64 * 8]uint64, scalar []byte) (x, y *big.Int) {
 	scalarReversed := make([]uint64, 4)
 	p256GetScalar(scalarReversed, scalar)
 
 	r := new(p256Point)
-	r.p256PreMult(Precomputed,scalarReversed)
-	x,y = r.p256PointToAffine()
+	r.p256PreMult(Precomputed, scalarReversed)
+	x, y = r.p256PointToAffine()
 	return
 }
 

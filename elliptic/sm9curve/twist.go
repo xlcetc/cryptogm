@@ -19,7 +19,7 @@ var twistB = &gfP2{
 // twistGen is the generator of group G₂ (in form of montEncode).
 var twistGen = &twistPoint{
 	gfP2{
-		gfP{0xdb6db4822750a8a6, 0x84c6135a5121f134 , 0x1874032f88791d41, 0x905112f2b85f3a37},
+		gfP{0xdb6db4822750a8a6, 0x84c6135a5121f134, 0x1874032f88791d41, 0x905112f2b85f3a37},
 		gfP{0x260226a68ce2da8f, 0x7ee5645edbf6c06b, 0xf8f57c82b1495444, 0x61fcf018bc47c4d1},
 	},
 	gfP2{

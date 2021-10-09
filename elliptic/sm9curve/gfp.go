@@ -93,10 +93,10 @@ func (e *gfP) Sqrt(f *gfP) {
 	tmp.exp(f, pMinus1Over4)
 
 	if *tmp == *one {
-		e.exp(f,pPlus3Over4)
-	} else if *tmp == pMinus1{
-		e.exp(f,pPlus3Over4)
-		gfpMul(e,e,&twoTo2kPlus1)
+		e.exp(f, pPlus3Over4)
+	} else if *tmp == pMinus1 {
+		e.exp(f, pPlus3Over4)
+		gfpMul(e, e, &twoTo2kPlus1)
 	}
 }
 
@@ -149,7 +149,7 @@ func legendre(e *gfP) int {
 
 func (c *gfP) Println() {
 	fmt.Print("&gfP{")
-	y,_ := new(big.Int).SetString(c.String(),16)
+	y, _ := new(big.Int).SetString(c.String(), 16)
 	words := y.Bits()
 	for _, word := range words[:len(words)-1] {
 		fmt.Printf("%#x, ", word)
@@ -158,10 +158,10 @@ func (c *gfP) Println() {
 }
 
 func gfpFromString(s string) gfP {
-	y,_ := new(big.Int).SetString(s,16)
+	y, _ := new(big.Int).SetString(s, 16)
 	words := y.Bits()
 	var a = gfP{}
-	for i:=0;i<len(words);i++ {
+	for i := 0; i < len(words); i++ {
 		a[i] = uint64(words[i])
 	}
 	return a

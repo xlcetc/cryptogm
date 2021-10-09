@@ -10,13 +10,13 @@ func bigFromBase10(s string) *big.Int {
 }
 
 // u is the BN parameter that determines the prime: 600000000058f98a.
-var u,_ = new(big.Int).SetString("600000000058f98a",16)
+var u, _ = new(big.Int).SetString("600000000058f98a", 16)
 
 // p is a prime over which we form a basic field: 36u⁴+36u³+24u²+6u+1.
-var p,_ = new(big.Int).SetString("b640000002a3a6f1d603ab4ff58ec74521f2934b1a7aeedbe56f9b27e351457d",16)
+var p, _ = new(big.Int).SetString("b640000002a3a6f1d603ab4ff58ec74521f2934b1a7aeedbe56f9b27e351457d", 16)
 
 // Order is the number of elements in both G₁ and G₂: 36u⁴+36u³+18u²+6u+1.
-var Order,_ = new(big.Int).SetString("b640000002a3a6f1d603ab4ff58ec74449f2934b18ea8beee56ee19cd69ecf25",16)
+var Order, _ = new(big.Int).SetString("b640000002a3a6f1d603ab4ff58ec74449f2934b18ea8beee56ee19cd69ecf25", 16)
 
 //gx,gy are coordinates of G1 in montEncode form
 //var gx = gfP{0x22e935e29860501b,0xa946fd5e0073282c,0xefd0cec817a649be,0x5129787c869140b5}
@@ -41,10 +41,10 @@ var r3 = &gfP{0x130257769df5827e, 0x36920fc0837ec76e, 0xcbec24519c22a142, 0x219b
 var pPlus1Over4 = [4]uint64{0xf95be6c9f8d4515f, 0x487ca4d2c69ebbb6, 0x7580ead3fd63b1d1, 0x2d90000000a8e9bc}
 
 //pPlus3Over4 is (p+3)/4
-var pPlus3Over4 = [4]uint64{0xf95be6c9f8d45160,0x487ca4d2c69ebbb6,0x7580ead3fd63b1d1,0x2d90000000a8e9bc}
+var pPlus3Over4 = [4]uint64{0xf95be6c9f8d45160, 0x487ca4d2c69ebbb6, 0x7580ead3fd63b1d1, 0x2d90000000a8e9bc}
 
 //twoTo2kPlus1 is 2^(2k+1),where k = (p-1)/4
-var twoTo2kPlus1 = gfP{0xe56f9b27e351457c,0x21f2934b1a7aeedb,0xd603ab4ff58ec745,0xb640000002a3a6f1}
+var twoTo2kPlus1 = gfP{0xe56f9b27e351457c, 0x21f2934b1a7aeedb, 0xd603ab4ff58ec745, 0xb640000002a3a6f1}
 
 //pMinus1 is p-1
 var pMinus1 = gfP{0xcadf364fc6a28afa, 0x43e5269634f5ddb7, 0xac07569feb1d8e8a, 0x6c80000005474de3}
@@ -88,4 +88,3 @@ var xiTo2PSquaredMinus2Over3 = &gfP{0x81054fcd94e9c1c4, 0x4c0e91cb8ce2df3e, 0x48
 
 // xiToPSquaredMinus1Over6 is ξ^((1p²-1)/6) where ξ = (-1/2)i.
 var xiToPSquaredMinus1Over6 = &gfP{0x646a4b5a4e6783b9, 0xd5e4017f8d980f9d, 0x8d8bf6fd0cdfe790, 0x2d4ac18b775a8f7b}
-

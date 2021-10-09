@@ -63,9 +63,9 @@ func (e *gfP6) Frobenius(a *gfP6) *gfP6 {
 // FrobeniusP2 computes (xτ²+yτ+z)^(p²) = xτ^(2p²) + yτ^(p²) + z
 func (e *gfP6) FrobeniusP2(a *gfP6) *gfP6 {
 	// τ^(2p²) = τ²τ^(2p²-2) = τ²ξ^((2p²-2)/3)
-	e.x.MulScalar(&a.x,xiTo2PSquaredMinus2Over3)
+	e.x.MulScalar(&a.x, xiTo2PSquaredMinus2Over3)
 	// τ^(p²) = ττ^(p²-1) = τξ^((p²-1)/3)
-	e.y.MulScalar(&a.y,xiToPSquaredMinus1Over3)
+	e.y.MulScalar(&a.y, xiToPSquaredMinus1Over3)
 	e.z.Set(&a.z)
 	return e
 }
@@ -214,26 +214,26 @@ func (e *gfP6) Invert(a *gfP6) *gfP6 {
 	return e
 }
 
-func montEncodeGfp6(a gfP6) (b gfP6)  {
-	var b1, b2, b3, b4, b5, b6 =gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}
+func montEncodeGfp6(a gfP6) (b gfP6) {
+	var b1, b2, b3, b4, b5, b6 = gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}
 	montEncode(&b1, &a.x.x)
 	montEncode(&b2, &a.x.y)
 	montEncode(&b3, &a.y.x)
 	montEncode(&b4, &a.y.y)
 	montEncode(&b5, &a.z.x)
 	montEncode(&b6, &a.z.y)
-	b = gfP6{gfP2{b1, b2},gfP2{b3, b4},gfP2{b5, b6}}
+	b = gfP6{gfP2{b1, b2}, gfP2{b3, b4}, gfP2{b5, b6}}
 	return b
 }
 
-func montDecodeGfp6(a gfP6) (b gfP6)   {
-	var b1, b2, b3, b4, b5, b6 =gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}
+func montDecodeGfp6(a gfP6) (b gfP6) {
+	var b1, b2, b3, b4, b5, b6 = gfP{}, gfP{}, gfP{}, gfP{}, gfP{}, gfP{}
 	montDecode(&b1, &a.x.x)
 	montDecode(&b2, &a.x.y)
 	montDecode(&b3, &a.y.x)
 	montDecode(&b4, &a.y.y)
 	montDecode(&b5, &a.z.x)
 	montDecode(&b6, &a.z.y)
-	b = gfP6{gfP2{b1, b2},gfP2{b3, b4},gfP2{b5, b6}}
+	b = gfP6{gfP2{b1, b2}, gfP2{b3, b4}, gfP2{b5, b6}}
 	return b
 }

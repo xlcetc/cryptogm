@@ -14,8 +14,8 @@ var curveB = newGFp(5)
 
 // curveGen is the generator of G₁ (in form of montEncode).
 var curveGen = &curvePoint{
-	x: gfP{0x22e935e29860501b,0xa946fd5e0073282c,0xefd0cec817a649be,0x5129787c869140b5},
-	y: gfP{0xee779649eb87f7c7,0x15563cbdec30a576,0x326353912824efbf,0x7215717763c39828},
+	x: gfP{0x22e935e29860501b, 0xa946fd5e0073282c, 0xefd0cec817a649be, 0x5129787c869140b5},
+	y: gfP{0xee779649eb87f7c7, 0x15563cbdec30a576, 0x326353912824efbf, 0x7215717763c39828},
 	z: *newGFp(1),
 	t: *newGFp(1),
 }

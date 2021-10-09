@@ -80,18 +80,18 @@ func (e *gfP2) Sub(a, b *gfP2) *gfP2 {
 //(ai+b)(ci+d)=(bd-2ac)+i((a+b)(c+d)-ac-bd)
 func (e *gfP2) Mul(a, b *gfP2) *gfP2 {
 	tx, t1, t2 := &gfP{}, &gfP{}, &gfP{}
-	gfpAdd(t1,&a.x,&a.y)             //a+b
-	gfpAdd(t2,&b.x,&b.y)             //c+d
-	gfpMul(tx,t1,t2)
+	gfpAdd(t1, &a.x, &a.y) //a+b
+	gfpAdd(t2, &b.x, &b.y) //c+d
+	gfpMul(tx, t1, t2)
 
-	gfpMul(t1,&a.x,&b.x)             //ac
-	gfpMul(t2,&a.y,&b.y)             //bd
+	gfpMul(t1, &a.x, &b.x) //ac
+	gfpMul(t2, &a.y, &b.y) //bd
 	gfpSub(tx, tx, t1)
-	gfpSub(tx,tx,t2)                 //x=(a+b)(c+d)-ac-bd
+	gfpSub(tx, tx, t2) //x=(a+b)(c+d)-ac-bd
 
 	ty := &gfP{}
-	gfpSub(ty, t2, t1)               //bd-ac
-	gfpSub(ty,ty,t1)                 //bd-2ac
+	gfpSub(ty, t2, t1) //bd-ac
+	gfpSub(ty, ty, t1) //bd-2ac
 
 	e.x.Set(tx)
 	e.y.Set(ty)
@@ -120,15 +120,15 @@ func (e *gfP2) MulXi(a *gfP2) *gfP2 {
 func (e *gfP2) Square(a *gfP2) *gfP2 {
 	// Complex squaring algorithm:
 	// (xi+y)² = (y²-2x²) + 2*i*x*y
-	tx1,tx2, ty1, ty2 := &gfP{},&gfP{}, &gfP{}, &gfP{}
-	gfpMul(tx1,&a.x,&a.y)
+	tx1, tx2, ty1, ty2 := &gfP{}, &gfP{}, &gfP{}, &gfP{}
+	gfpMul(tx1, &a.x, &a.y)
 	gfpAdd(tx2, tx1, tx1)
 
 	gfpMul(ty1, &a.y, &a.y)
 	gfpMul(ty2, &a.x, &a.x)
 	ty := &gfP{}
-	gfpAdd(ty,ty2,ty2)
-	gfpSub(ty1,ty1,ty)
+	gfpAdd(ty, ty2, ty2)
+	gfpSub(ty1, ty1, ty)
 
 	e.x.Set(tx2)
 	e.y.Set(ty1)
@@ -141,7 +141,7 @@ func (e *gfP2) Invert(a *gfP2) *gfP2 {
 	t1, t2 := &gfP{}, &gfP{}
 	gfpMul(t1, &a.x, &a.x)
 	t3 := &gfP{}
-	gfpAdd(t3,t1,t1)
+	gfpAdd(t3, t1, t1)
 	gfpMul(t2, &a.y, &a.y)
 	gfpAdd(t3, t3, t2)
 
@@ -155,7 +155,7 @@ func (e *gfP2) Invert(a *gfP2) *gfP2 {
 	return e
 }
 
-func (c *gfP2) GFp2Exp(a *gfP2,b *big.Int) *gfP2 {
+func (c *gfP2) GFp2Exp(a *gfP2, b *big.Int) *gfP2 {
 	sum := (&gfP2{}).SetOne()
 	t := &gfP2{}
 
