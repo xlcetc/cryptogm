@@ -1,6 +1,6 @@
 # cryptogm in golang
 
-[![Build Status](https://travis-ci.com/xlcetc/cryptogm.svg?branch=master)](https://travis-ci.com/xlcetc/cryptogm)
+![Go](https://github.com/xlcetc/cryptogm/workflows/Go/badge.svg?branch=master)
 
 An implementation of china crypto standards written in golang. This package includes sm2,sm3,sm4 and sm9 algorithms.
 Some algorithms have been optimized using AVX2 instructions.
