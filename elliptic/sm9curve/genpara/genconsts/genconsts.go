@@ -207,13 +207,17 @@ func gensm9para() {
 	}
 
 	// Create algebraic constants.
-	xi := newGFp2(p)
+	bi := newGFp2(p)
 	b, _ := new(big.Int).SetString("5b2000000151d378eb01d5a7fac763a290f949a58d3d776df2b7cd93f1a8a2be", 16)
-	xi.x.Set(b)
+	bi.x.Set(b)
 	fmt.Println("//ξ=bi, where b = (-1/2) mod p (in montEncode form).")
 	fmt.Print("var bi = ")
-	xi.MontEncode(bitSize)
-	xi.PrintX()
+	bi = bi.MontEncode(bitSize)
+	bi.PrintX()
+
+	// reset xi = bi
+	xi := newGFp2(p)
+	xi.x.Set(b)
 
 	exp := big.NewInt(1)
 	exp.Sub(p, exp)
