@@ -7,6 +7,8 @@ package sm2
 
 import (
 	"crypto"
+	"crypto/ecdsa"
+	"crypto/elliptic"
 	"errors"
 	"github.com/xlcetc/cryptogm/elliptic/sm2curve"
 	"github.com/xlcetc/cryptogm/sm/sm3"
@@ -15,8 +17,7 @@ import (
 )
 
 type PublicKey struct {
-	sm2curve.Curve
-	X, Y        *big.Int
+	ecdsa.PublicKey
 	PreComputed *[37][64 * 8]uint64 //precomputation
 }
 
@@ -28,7 +29,7 @@ type PrivateKey struct {
 
 var generateRandK = _generateRandK
 
-//optMethod includes some optimized methods.
+// optMethod includes some optimized methods.
 type optMethod interface {
 	// CombinedMult implements fast multiplication S1*g + S2*p (g - generator, p - arbitrary point)
 	CombinedMult(Precomputed *[37][64 * 8]uint64, baseScalar, scalar []byte) (x, y *big.Int)
@@ -45,7 +46,7 @@ func (priv *PrivateKey) Public() crypto.PublicKey {
 
 var one = new(big.Int).SetInt64(1)
 
-func randFieldElement(c sm2curve.Curve, rand io.Reader) (k *big.Int, err error) {
+func randFieldElement(c elliptic.Curve, rand io.Reader) (k *big.Int, err error) {
 	params := c.Params()
 	b := make([]byte, params.BitSize/8+8)
 	_, err = io.ReadFull(rand, b)
@@ -78,7 +79,7 @@ func GenerateKey(rand io.Reader) (*PrivateKey, error) {
 
 var errZeroParam = errors.New("zero parameter")
 
-func _generateRandK(rand io.Reader, c sm2curve.Curve) (k *big.Int) {
+func _generateRandK(rand io.Reader, c elliptic.Curve) (k *big.Int) {
 	params := c.Params()
 	two := big.NewInt(2)
 	b := make([]byte, params.BitSize/8+8)
@@ -129,7 +130,7 @@ func getZById(pub *PublicKey, id []byte) []byte {
 	return hash[:]
 }
 
-//Za = sm3(ENTL||IDa||a||b||Gx||Gy||Xa||Xy)
+// Za = sm3(ENTL||IDa||a||b||Gx||Gy||Xa||Xy)
 func getZ(pub *PublicKey) []byte {
 	return getZById(pub, []byte("1234567812345678"))
 }
