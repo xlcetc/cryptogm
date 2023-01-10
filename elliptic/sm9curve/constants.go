@@ -63,10 +63,10 @@ var pMinus1Over4 = [4]uint64{0xf95be6c9f8d4515f, 0x487ca4d2c69ebbb6, 0x7580ead3f
 var bi = gfP{0xe56f9b27e351457d, 0x21f2934b1a7aeedb, 0xd603ab4ff58ec745, 0x3640000002a3a6f1}
 
 // s is the Montgomery encoding of the square root of -3. Then, s = sqrt(-3) * 2^256 mod p.
-var s = &gfP{0x4c7a890d4bc5c1d4, 0xb5fb866e5e28fa49, 0xf201391aa72f97c1, 0x3cc0000000e137a5}
+var s = &gfP{0x7b2e07c770965b71, 0xa9bce0778466aa4b, 0x2e12588fcbc9e459, 0x8f4000000d3242b9}
 
 // sMinus1Over2 is the Montgomery encoding of (s-1)/2. Then, sMinus1Over2 = ( (s-1) / 2) * 2^256 mod p.
-var sMinus1Over2 = &gfP{0x4c7a890d4bc5c1d4, 0xb5fb866e5e28fa49, 0xf201391aa72f97c1, 0x3cc0000000e137a5}
+var sMinus1Over2 = &gfP{0xb04ed177a9f3d077, 0x65d7b9e14f70cc93, 0x820b01efe0ac55cf, 0x22c0000007eaf4d5}
 
 // xiToPMinus1Over2 is ξ^((p-1)/2) where ξ = (-1/2)i.
 var xiToPMinus1Over2 = &gfP{0xabbaac18a46a2054, 0x46ee57561222c759, 0x1dae609fa0e23561, 0x1df7113dae0adc3c}

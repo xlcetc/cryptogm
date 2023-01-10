@@ -343,54 +343,22 @@ func TestDirtyUnmarshal(t *testing.T) {
 //	c.Println()
 //}
 
-//sqrt(-3)* 2^256 mod p
-//func TestGenS(t *testing.T) {
-//	one := new(big.Int).SetInt64(1)
-//	two := new(big.Int).SetInt64(2)
-//	three := new(big.Int).SetInt64(3)
-//	four := new(big.Int).SetInt64(4)
-//	a := new(big.Int).Sub(p,three)
-//
-//	pmins := new(big.Int).Sub(p,one)
-//	pmins.Div(pmins,four)
-//
-//	b := new(big.Int).Exp(a,pmins,p)
-//	twoTo2kplus1 := new(big.Int).Exp(two,pmins,p)
-//
-//	pPlus3Over4 := new(big.Int).Sub(p,three)
-//	pPlus3Over4.Div(pPlus3Over4,four)
-//	c := new(big.Int)
-//	pminus1 := new(big.Int).Sub(p,one)
-//	if b.Cmp(one) == 0 {
-//		c.Exp(a,pPlus3Over4,p)
-//	} else if b.Cmp(pminus1) == 0{
-//		c.Exp(a,pPlus3Over4,p)
-//		c.Mul(c,twoTo2kplus1)
-//		c.Mod(c,p)
-//	}
-//
-//	//s = sqrt(-3) * 2^256 mod p
-//	r,_ := new(big.Int).SetString("ffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffffff",16)
-//	r.Add(r,one)
-//	ss := new(big.Int).Mul(c,r)
-//	ss.Mod(ss,p)
-//
-//	fmt.Printf("%x\n",ss)
-//
-//	var d gfP
-//	montDecode(&d,s)
-//	d.Println()
-//
-//	//sMinus1Over2 = ( (s-1) / 2) * 2^256 mod p
-//	sMinus1Over2s := new(big.Int).Sub(ss,one)
-//	sMinus1Over2s.Div(sMinus1Over2s,two)
-//	sMinus1Over2s.Mul(sMinus1Over2s,r)
-//	sMinus1Over2s.Mod(sMinus1Over2s,p)
-//	fmt.Printf("%x\n",sMinus1Over2s)
-//
-//	var e gfP
-//	montDecode(&e,sMinus1Over2)
-//	d.Println()
+//func TestGens(t *testing.T) {
+//	// s is the Montgomery encoding of the square root of -3. Then, s = sqrt(-3) * 2^256 mod p.
+//	negThree := newGFp(-3)
+//	s := new(gfP)
+//	s.Sqrt(negThree)
+//	fmt.Println(s.String())
+//	// sMinus1Over2 is the Montgomery encoding of (s-1)/2. Then, sMinus1Over2 = ( (s-1) / 2) * 2^256 mod p.
+//	sMinus1Over2 := new(gfP)
+//	sMinus1Over2.Set(s)
+//	one := newGFp(1)
+//	gfpSub(sMinus1Over2, s, one)
+//	two := newGFp(2)
+//	inverse := new(gfP)
+//	inverse.Invert(two)
+//	gfpMul(sMinus1Over2, sMinus1Over2, inverse)
+//	fmt.Println(sMinus1Over2.String())
 //}
 
 func BenchmarkG1(b *testing.B) {
