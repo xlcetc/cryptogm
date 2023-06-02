@@ -4,12 +4,13 @@
 package sm2curve
 
 import (
+	"crypto/elliptic"
 	"math/big"
 )
 
 type (
 	p256Curve struct {
-		*CurveParams
+		*elliptic.CurveParams
 	}
 )
 
@@ -19,7 +20,7 @@ var (
 
 func initP256() {
 	// See FIPS 186-3, section D.2.3
-	p256.CurveParams = &CurveParams{Name: "P-256"}
+	p256.CurveParams = &elliptic.CurveParams{Name: "P-256"}
 	p256.P, _ = new(big.Int).SetString("FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFF", 16)
 	p256.N, _ = new(big.Int).SetString("FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFF7203DF6B21C6052B53BBF40939D54123", 16)
 	p256.B, _ = new(big.Int).SetString("28E9FA9E9D9F5E344D5A9E4BCF6509A7F39789F515AB8F92DDBCBD414D940E93", 16)

@@ -10,11 +10,13 @@
 // http://link.springer.com/article/10.1007%2Fs13389-014-0090-x
 // https://eprint.iacr.org/2013/816.pdf
 
+//go:build amd64
 // +build amd64
 
 package sm2curve
 
 import (
+	"crypto/elliptic"
 	"fmt"
 	"math/big"
 	"sync"
@@ -22,7 +24,7 @@ import (
 
 type (
 	p256Curve struct {
-		*CurveParams
+		*elliptic.CurveParams
 	}
 
 	p256Point struct {
@@ -36,9 +38,9 @@ var (
 	precomputeOnce  sync.Once
 )
 
-func initP256() {
+func initSM2P256() {
 	// See FIPS 186-3, section D.2.3
-	p256.CurveParams = &CurveParams{Name: "P-256"}
+	p256.CurveParams = &elliptic.CurveParams{Name: "SM2-P256"}
 	p256.P, _ = new(big.Int).SetString("FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFFF00000000FFFFFFFFFFFFFFFF", 16)
 	p256.N, _ = new(big.Int).SetString("FFFFFFFEFFFFFFFFFFFFFFFFFFFFFFFF7203DF6B21C6052B53BBF40939D54123", 16)
 	p256.B, _ = new(big.Int).SetString("28E9FA9E9D9F5E344D5A9E4BCF6509A7F39789F515AB8F92DDBCBD414D940E93", 16)
@@ -47,7 +49,7 @@ func initP256() {
 	p256.BitSize = 256
 }
 
-func (curve p256Curve) Params() *CurveParams {
+func (curve p256Curve) Params() *elliptic.CurveParams {
 	return curve.CurveParams
 }
 
@@ -94,7 +96,7 @@ func sm2p256PointAddAsm(res, in1, in2 []uint64) int
 // Point double
 func sm2p256PointDoubleAsm(res, in []uint64)
 
-//Test Internal Func
+// Test Internal Func
 func sm2p256TestSubInternal(res, in1, in2 []uint64)
 func sm2p256TestMulInternal(res, in1, in2 []uint64)
 func sm2p256TestMulBy2Inline(res, in1 []uint64)
@@ -220,47 +222,48 @@ func maybeReduceModP(in *big.Int) *big.Int {
 	return new(big.Int).Mod(in, p256.P)
 }
 
-//CombinedMult implements fast multiplication baseScalar*G+scalar*P.
-//CombinedMult returns baseScalar*G+scalar*P, where G is the base point of the group
-//and P is the point (base or non-base point) of the group,
-//baseScalar and scalar are integers in big-endian form.
-//func (curve p256Curve) CombinedMult(bigX, bigY *big.Int, baseScalar, scalar []byte) (x, y *big.Int) {
-//	scalarReversed := make([]uint64, 4)
-//	var r1, r2 p256Point
-//	p256GetScalar(scalarReversed, baseScalar)
-//	r1IsInfinity := scalarIsZero(scalarReversed)
-//	r1.p256BaseMult(scalarReversed)
+// CombinedMult implements fast multiplication baseScalar*G+scalar*P.
+// CombinedMult returns baseScalar*G+scalar*P, where G is the base point of the group
+// and P is the point (base or non-base point) of the group,
+// baseScalar and scalar are integers in big-endian form.
 //
-//	p256GetScalar(scalarReversed, scalar)
-//	r2IsInfinity := scalarIsZero(scalarReversed)
-//	fromBig(r2.xyz[0:4], maybeReduceModP(bigX))
-//	fromBig(r2.xyz[4:8], maybeReduceModP(bigY))
-//	sm2p256Mul(r2.xyz[0:4], r2.xyz[0:4], rr[:])
-//	sm2p256Mul(r2.xyz[4:8], r2.xyz[4:8], rr[:])
+//	func (curve p256Curve) CombinedMult(bigX, bigY *big.Int, baseScalar, scalar []byte) (x, y *big.Int) {
+//		scalarReversed := make([]uint64, 4)
+//		var r1, r2 p256Point
+//		p256GetScalar(scalarReversed, baseScalar)
+//		r1IsInfinity := scalarIsZero(scalarReversed)
+//		r1.p256BaseMult(scalarReversed)
 //
-//	// This sets r2's Z value to 1, in the Montgomery domain.
-//	//	r2.xyz[8] = 0x0000000000000001
-//	//	r2.xyz[9] = 0xffffffff00000000
-//	//	r2.xyz[10] = 0xffffffffffffffff
-//	//	r2.xyz[11] = 0x00000000fffffffe
-//	r2.xyz[8] = 0x0000000000000001
-//	r2.xyz[9] = 0x00000000FFFFFFFF
-//	r2.xyz[10] = 0x0000000000000000
-//	r2.xyz[11] = 0x0000000100000000
+//		p256GetScalar(scalarReversed, scalar)
+//		r2IsInfinity := scalarIsZero(scalarReversed)
+//		fromBig(r2.xyz[0:4], maybeReduceModP(bigX))
+//		fromBig(r2.xyz[4:8], maybeReduceModP(bigY))
+//		sm2p256Mul(r2.xyz[0:4], r2.xyz[0:4], rr[:])
+//		sm2p256Mul(r2.xyz[4:8], r2.xyz[4:8], rr[:])
 //
-//	//r2.p256ScalarMult(scalarReversed)
-//	//sm2p256PointAddAsm(r1.xyz[:], r1.xyz[:], r2.xyz[:])
+//		// This sets r2's Z value to 1, in the Montgomery domain.
+//		//	r2.xyz[8] = 0x0000000000000001
+//		//	r2.xyz[9] = 0xffffffff00000000
+//		//	r2.xyz[10] = 0xffffffffffffffff
+//		//	r2.xyz[11] = 0x00000000fffffffe
+//		r2.xyz[8] = 0x0000000000000001
+//		r2.xyz[9] = 0x00000000FFFFFFFF
+//		r2.xyz[10] = 0x0000000000000000
+//		r2.xyz[11] = 0x0000000100000000
 //
-//	r2.p256ScalarMult(scalarReversed)
+//		//r2.p256ScalarMult(scalarReversed)
+//		//sm2p256PointAddAsm(r1.xyz[:], r1.xyz[:], r2.xyz[:])
 //
-//	var sum, double p256Point
-//	pointsEqual := sm2p256PointAddAsm(sum.xyz[:], r1.xyz[:], r2.xyz[:])
-//	sm2p256PointDoubleAsm(double.xyz[:], r1.xyz[:])
-//	sum.CopyConditional(&double, pointsEqual)
-//	sum.CopyConditional(&r1, r2IsInfinity)
-//	sum.CopyConditional(&r2, r1IsInfinity)
-//	return sum.p256PointToAffine()
-//}
+//		r2.p256ScalarMult(scalarReversed)
+//
+//		var sum, double p256Point
+//		pointsEqual := sm2p256PointAddAsm(sum.xyz[:], r1.xyz[:], r2.xyz[:])
+//		sm2p256PointDoubleAsm(double.xyz[:], r1.xyz[:])
+//		sum.CopyConditional(&double, pointsEqual)
+//		sum.CopyConditional(&r1, r2IsInfinity)
+//		sum.CopyConditional(&r2, r1IsInfinity)
+//		return sum.p256PointToAffine()
+//	}
 func (curve p256Curve) CombinedMult(Precomputed *[37][64 * 8]uint64, baseScalar, scalar []byte) (x, y *big.Int) {
 	scalarReversed := make([]uint64, 4)
 	var r1 p256Point
@@ -807,7 +810,7 @@ func Uint64ToAffine(in []uint64) (x, y *big.Int) {
 	return tmpx, tmpy
 }
 
-//precompute public key table
+// precompute public key table
 func (curve p256Curve) InitPubKeyTable(x, y *big.Int) (Precomputed *[37][64 * 8]uint64) {
 	Precomputed = new([37][64 * 8]uint64)
 
@@ -862,7 +865,7 @@ func (curve p256Curve) InitPubKeyTable(x, y *big.Int) (Precomputed *[37][64 * 8]
 	return
 }
 
-//fast sm2p256Mult with public key table
+// fast sm2p256Mult with public key table
 func (p *p256Point) p256PreMult(Precomputed *[37][64 * 8]uint64, scalar []uint64) {
 	wvalue := (scalar[0] << 1) & 0xff
 	sel, sign := boothW7(uint(wvalue))
@@ -905,7 +908,7 @@ func (p *p256Point) p256PreMult(Precomputed *[37][64 * 8]uint64, scalar []uint64
 	}
 }
 
-//fast scalarmult with public key table
+// fast scalarmult with public key table
 func (curve p256Curve) PreScalarMult(Precomputed *[37][64 * 8]uint64, scalar []byte) (x, y *big.Int) {
 	scalarReversed := make([]uint64, 4)
 	p256GetScalar(scalarReversed, scalar)
